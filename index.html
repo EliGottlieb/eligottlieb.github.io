@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jimmy's Playground
+  </title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<h1 id="basicinfo">
+  <span>Score: </span>
+  <var id="score-counter"> 0 </var>
+  <span>- High Score: </span>
+  <var id="highscore"> 0 </var>
+  <button type="botton" id="togglejimmy">Toggle Jimmy</button>
+</h1>
+<h3 id="jimmybrain">
+  <span> Jimmy's Brain </span>
+  </h3>
+  <h4 id="jimmybrainslider">
+
+  </h4>
+<h2 id="jimmyinfo">
+  <span id="generation-counter"> </span>
+  <span id="set-counter"> </span>
+  <span id="training-counter"> </span>
+  <button type="button" id="reset">Wipe Jimmy :(</button>
+  <button type="button" id="pause">Pause Jimmy</button>
+  <button type="button" id="play">Play Jimmy</button>
+  <button type="button" id="graph">Graph Stuff</button>
+  <button type="button" id="hidegraph">Hide Graph</button>
+  <button type="button" id="viewbrain">View Brain</button>
+  <button type="button" id="hidebrain">Hide Brain</button>
+</h2>
+
+
+<body >
+  <script src="p5/p5.js"></script>
+  <!-- <script src="../addons/p5.sound.js"></script> -->
+  <script src="gameScripts/square.js"></script>
+  <script src="gameScripts/snake.js"></script>
+  <script src="gameScripts/apple.js"></script>
+  <script src="gameScripts/buttons.js"></script>
+  <script src="gameScripts/draw-functions.js"></script>
+  <script src="gameScripts/bsketch.js"></script>
+  <script src="gameScripts/sketch.js"></script>
+  <script src="gameScripts/AI/aiutil.js"></script>
+  <script src="gameScripts/AI/Network.js"></script>
+  <script src="gameScripts/AI/Matrix.js"></script>
+  <script src="gameScripts/AI/qlearning.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+    <div id='myDiv'></div>
+</body>
+
+</html>

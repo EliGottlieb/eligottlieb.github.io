@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    background-color: gray;
+    color: white;
+    display: block;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    margin: 0;
+}
+h2 {
+    background-color: gray;
+    color: white;
+    display: block;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    margin: 0;
+}
+h3{
+    flex-direction: column;
+    align-items: center;
+}
+
+body {
+    background-color: gray;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+}
