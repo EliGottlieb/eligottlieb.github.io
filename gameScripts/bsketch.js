@@ -16,7 +16,7 @@ const s = (p) => {
         h2_output_connections = []
 
         // The space between rows, columns, and the diameter of nodes
-        let rowGap = 5
+        let rowGap = 4
         let colGap = 170
         let diameter = 20
 
@@ -32,7 +32,7 @@ const s = (p) => {
         p.text(inputLabel, inputX - (p.textWidth(inputLabel) / 2), labelY)
 
         // Prepare labels for the input node rows
-        let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Distance to Food"]
+        let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Distance to Food", "Trapped ?"]
 
         // Draw the input nodes and create the labels
         var x = inputX
@@ -40,7 +40,7 @@ const s = (p) => {
         let mid;
         for (let i = 0; i < qlearner.brain.input_nodes; i++) {
             if (qlearner.brain.input_nodes / 2 == i) {
-                mid = y + diameter / 2 + rowGap / 2
+                mid = y - ((diameter / 2) + (rowGap / 2))
             }
             else if (Math.floor(qlearner.brain.input_nodes / 2) == i) {
                 mid = y
@@ -228,7 +228,7 @@ function mapToOpacity(x) {
     if (x == 0)
         return [0, 0, 0, 0]
     let input = Math.abs(x)
-    let inputMax = 2
+    let inputMax = 4
     let inputMin = 0
     let outputMax = 255
     let outputMin = 0

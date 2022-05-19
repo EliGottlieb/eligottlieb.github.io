@@ -1,6 +1,8 @@
 var squareWidth = 20;
 var xOffset = 5;
 var yOffset = 5;
+var canvasWidth
+var canvasHeight
 var fr;
 var realsnake;
 var apple;
@@ -14,12 +16,14 @@ var genCount = 1;
 var randomize_slider;
 var speed_slider;
 
-var appleReward = 10
-var deathReward = -10
+var appleReward = .9
+var deathReward = -.9
+var closerReward = 0.2
 var safeReward = 0
 var training = 0;
 var sets = 0;
 var hiddenLayerSize;
+var inputLayerSize = 14;
 var qlearner;
 
 
@@ -45,6 +49,28 @@ function checkCollisions(sn) {
     gO = true;
   }
   gameOver = gO
+}
+
+function checkCollisionsForBFS(sn, sq) {
+  // Define wall collisions
+  let hitRightWall = (sq.x >= canvasWidth)
+  let hitLeftWall = (sq.x < 0)
+  let hitBottomWall = (sq.y >= canvasHeight);
+  let hitTopWall = (sq.y < 0);
+
+  // Define snake collisions
+  let hittingSelf = false;
+  for (let i = 0; i < sn.squares.length - 1; i++) {
+    let tempsq = sn.squares[i];
+    if ((tempsq.x == sq.x) && (tempsq.y == sq.y)) {
+      hittingSelf = true;
+      break;
+    }
+  }
+  if (hitRightWall || hitLeftWall || hitBottomWall || hitTopWall || hittingSelf) {
+    return true;
+  }
+  return false;
 }
 
 function checkEatingApple(sn, sim) {
@@ -77,10 +103,10 @@ function checkEatingApple(sn, sim) {
 function calculateCanvasSize() {
   // Extra width and height will be split automatically when canvas is centered
   let extraWidth = (window.innerWidth % (xOffset + squareWidth)) + xOffset;
-  let canvasWidth = window.innerWidth - extraWidth;
+  canvasWidth = window.innerWidth - extraWidth;
   let extraHeightBuffer = 3 * (squareWidth + yOffset);
   let extraHeight = (window.innerHeight % (yOffset + squareWidth)) + yOffset + extraHeightBuffer;
-  let canvasHeight = window.innerHeight - extraHeight;
+  canvasHeight = window.innerHeight - extraHeight;
   return { canvasWidth, canvasHeight };
 }
 
@@ -134,6 +160,71 @@ function onBottomEdge() {
   if (realsnake.head.y + squareWidth >= height) return true;
   else return false;
 }
+
+function getTotalOpenSquares(sn) {
+  let widthSquares = Math.floor(width / (squareWidth + yOffset))
+  let heightSquares = Math.floor(height / (squareWidth + xOffset))
+  let totalSquares = widthSquares * heightSquares
+  return totalSquares - sn.squares.length
+}
+
+// isChecked should display current if true
+function determineAmpleRemainingSpace(sim) {
+  // Queue to hold squares
+  let sn = qlearner.snake
+  let q = new Queue();
+  q.enqueue(sn.head);
+
+  // Space to the next square in the x and y direction
+  let oneHorizontalTile = xOffset + squareWidth;
+  let oneVerticalTile = yOffset + squareWidth;
+
+  // Set to hold all available squares
+  let availableSquaresSet = new Set();
+  while (q.tail - q.head != 0) {
+    let current = q.dequeue();
+    let alreadyVisited = false;
+    /*
+    for (let i = 0; i < availableSquares.length; i++) {
+      if (availableSquares[i].Equals(current)) {
+        alreadyVisited = true;
+        //console.log("Already visited")
+        break;
+      }
+    }
+    */
+   alreadyVisited = availableSquaresSet.has(current.toString())
+    if (alreadyVisited) {
+      //console.log("Current has already been looked at")
+      continue;
+    }
+    if (checkCollisionsForBFS(sn, current)) {
+      //console.log("Danger")
+      continue;
+    }
+    availableSquaresSet.add(current.toString());
+    if (availableSquaresSet.size >= sn.squares.length) {
+      return true;
+    }
+    let leftSquare = new Square(current.x - oneHorizontalTile, current.y, squareWidth);
+
+    q.enqueue(leftSquare);
+    let upSquare = new Square(current.x, current.y - oneVerticalTile, squareWidth);
+    q.enqueue(upSquare);
+    let rightSquare = new Square(current.x + oneHorizontalTile, current.y, squareWidth);
+    q.enqueue(rightSquare);
+    let downSquare = new Square(current.x, current.y + oneVerticalTile, squareWidth);
+    q.enqueue(downSquare);
+  }
+  if (sim) {
+    //console.log("False in sim")
+    //frameRate(0)
+  }
+  else {
+    //console.log("FALSE - Available squares: " + availableSquares.length + ", Half the open squares: " + (getTotalOpenSquares(sn) * 0.5))
+  }
+  return false;
+}
 ///////////////// End Util Functions /////////////////////////////////////////
 
 //////////////// P5 Functions /////////////////////////////////////////////////
@@ -163,7 +254,7 @@ function setup() {
     qlearner = new QLearner(realsnake, apple);
     downloadBrain()
   }
-  
+
   // Create canvas
   let dimensions = calculateCanvasSize();
   createCanvas(dimensions.canvasWidth, dimensions.canvasHeight);
@@ -172,13 +263,15 @@ function setup() {
 
 function draw() {
   if (!userInput) {
-    // Prepare for simulation, read sliders
-    if(hls_slider.value() != hiddenLayerSize) {
+    // If hidden layer size has changed, reset hiddenLayerSize and reset Jimmy
+    if (hls_slider.value() != hiddenLayerSize) {
       hiddenLayerSize = hls_slider.value()
       resetJimmy()
     }
+
+    // Prepare for simulation, read sliders
     let oldState = qlearner.getCurrentState();;
-    let oldStateArray= oldState.toArray()
+    let oldStateArray = oldState.toArray()
     let bestaction = null;
     framerate = framerate_slider.value()
     frameRate(framerate)
@@ -218,16 +311,23 @@ function draw() {
         rewardList[i] = deathReward
       }
 
-      if(rewardList[i] == deathReward) {
+      if (rewardList[i] == deathReward) {
         dones[i] = true;
       }
 
       // Move savedsnake based on the action in order to calculate distance
+
+
       savedsnake.move()
+      if (!dones[i] && !determineAmpleRemainingSpace(true)) {
+        qlearner.isTrapped = true;
+        rewardList[i] = deathReward
+      }
       newstates[i] = qlearner.getCurrentState()
+      qlearner.isTrapped = false;
       let distanceIndex = 12;
       if (newstates[i].toArray()[distanceIndex] < oldState.toArray()[distanceIndex]) {
-        rewardList[i]++;
+        rewardList[i]+=closerReward;
       }
     }
 
@@ -238,7 +338,8 @@ function draw() {
     bestaction = qlearner.bestAction(oldState);
     doAction(bestaction, realsnake);
     qlearner.updateBrain(oldState, newstates, rewardList, dones);
-
+    determineAmpleRemainingSpace(false)
+    //frameRate(0)
     // Check apple and collisions
     checkEatingApple(realsnake, false)
     checkCollisions(realsnake, false)
@@ -266,6 +367,7 @@ function draw() {
 
     // Update the game
     realsnake.move()
+    determineAmpleRemainingSpace(realsnake)
     drawSnake();
     inputUsed = false;
   }

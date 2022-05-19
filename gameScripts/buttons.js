@@ -65,7 +65,7 @@ function resetJimmy() {
       document.getElementById("generation-counter").innerText = "- Jimmy's: " + 0;
 
       // Create new brain and overwrite old brain
-      qlearner.brain = new Network(13, hiddenLayerSize, hiddenLayerSize, 4);
+      qlearner.brain = new Network(inputLayerSize, hiddenLayerSize, hiddenLayerSize, 4);
       uploadBrain()
       restartGame()
 }
@@ -108,7 +108,7 @@ function createSliders() {
       hls_label.parent(document.getElementById("jimmybrainslider"));
       hls_label.elt.style.flex = 1
       // Create hidden layer size slider
-      hls_slider = createSlider(1, 60, 13, 1)
+      hls_slider = createSlider(1, 60, 30, 1)
       hls_slider.parent(document.getElementById("jimmybrainslider"))
       hls_slider.elt.style.flex = 1
       hls_slider.elt.style.marginRight = "20px"

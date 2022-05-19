@@ -64,6 +64,8 @@ function drawPlayAgainButton() {
 }
 
 function windowResized() {
+  document.getElementById("play").style.display = "none"
+  document.getElementById("pause").style.display = "flex"
   let dimensions = calculateCanvasSize();
   resizeCanvas(dimensions.canvasWidth, dimensions.canvasHeight);
   background(255);

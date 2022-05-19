@@ -3,7 +3,7 @@ let qDiscountFactor = 0.85;
 
 class QLearner {
     constructor(sn, apple) {
-        this.brain = new Network(13, hiddenLayerSize, hiddenLayerSize, 4);
+        this.brain = new Network(inputLayerSize, hiddenLayerSize, hiddenLayerSize, 4);
         this.targetbrain = this.brain
         this.snake = sn;
         this.apple = apple;
@@ -12,6 +12,7 @@ class QLearner {
         this.states = {};
         this.randomize = 1;
         this.moves = 0;
+        this.isTrapped = false;
     }
 
     getCurrentState() {
@@ -87,7 +88,11 @@ class QLearner {
             }
         }
         let dangerStates = [dangerUp, dangerDown, dangerLeft, dangerRight];
-        return new State(dangerStates, directionStates, foodStates);
+        let trappedState = 0
+        if(this.isTrapped) {
+            trappedState = 1
+        }
+        return new State(dangerStates, directionStates, foodStates, trappedState);
     }
 
     bestAction(state) {
@@ -215,10 +220,11 @@ class QLearner {
 }
 
 class State {
-    constructor(dangerStates, directionStates, foodStates) {
+    constructor(dangerStates, directionStates, foodStates, trappedState) {
         this.dangerStates = dangerStates;
         this.directionStates = directionStates;
         this.foodStates = foodStates;
+        this.trappedState = trappedState
     }
     toArray() {
         let arr = []
@@ -231,6 +237,7 @@ class State {
         for (let i = 0; i < this.foodStates.length; i++) {
             arr.push(this.foodStates[i])
         }
+        arr.push(this.trappedState)
         return arr
     }
     toString() {
@@ -244,6 +251,7 @@ class State {
         for (let i = 0; i < this.foodStates.length; i++) {
             state += this.foodStates[i] + ","
         }
+        state+=this.trappedState
         return state;
     }
 }
