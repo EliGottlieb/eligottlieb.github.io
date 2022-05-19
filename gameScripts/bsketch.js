@@ -32,7 +32,7 @@ const s = (p) => {
         p.text(inputLabel, inputX - (p.textWidth(inputLabel) / 2), labelY)
 
         // Prepare labels for the input node rows
-        let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Distance to Food", "Trapped ?"]
+        let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Distance to Food", "Trapped"]
 
         // Draw the input nodes and create the labels
         var x = inputX
