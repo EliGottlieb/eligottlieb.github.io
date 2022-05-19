@@ -16,8 +16,8 @@ var genCount = 1;
 var randomize_slider;
 var speed_slider;
 
-var appleReward = .9
-var deathReward = -.9
+var appleReward = .5
+var deathReward = -.5
 var closerReward = 0.2
 var safeReward = 0
 var training = 0;
@@ -169,7 +169,7 @@ function getTotalOpenSquares(sn) {
 }
 
 // isChecked should display current if true
-function determineAmpleRemainingSpace(sim) {
+function determineAmpleRemainingSpace() {
   // Queue to hold squares
   let sn = qlearner.snake
   let q = new Queue();
@@ -184,16 +184,7 @@ function determineAmpleRemainingSpace(sim) {
   while (q.tail - q.head != 0) {
     let current = q.dequeue();
     let alreadyVisited = false;
-    /*
-    for (let i = 0; i < availableSquares.length; i++) {
-      if (availableSquares[i].Equals(current)) {
-        alreadyVisited = true;
-        //console.log("Already visited")
-        break;
-      }
-    }
-    */
-   alreadyVisited = availableSquaresSet.has(current.toString())
+    alreadyVisited = availableSquaresSet.has(current.toString())
     if (alreadyVisited) {
       //console.log("Current has already been looked at")
       continue;
@@ -215,13 +206,6 @@ function determineAmpleRemainingSpace(sim) {
     q.enqueue(rightSquare);
     let downSquare = new Square(current.x, current.y + oneVerticalTile, squareWidth);
     q.enqueue(downSquare);
-  }
-  if (sim) {
-    //console.log("False in sim")
-    //frameRate(0)
-  }
-  else {
-    //console.log("FALSE - Available squares: " + availableSquares.length + ", Half the open squares: " + (getTotalOpenSquares(sn) * 0.5))
   }
   return false;
 }
@@ -294,7 +278,7 @@ function draw() {
 
       // checkEatingApple but with the sim parameter as true as to not move the apple
       if (checkEatingApple(savedsnake, true)) {
-        rewardList[i] = appleReward
+        rewardList[i] += appleReward
       }
 
       // Check is the simulated move results in a death
@@ -302,32 +286,29 @@ function draw() {
         rewardList[i] = deathReward
       }
       else if (actionList[i] == 'down' && oldStateArray[1] == 1) {
-        rewardList[i] = deathReward
+        rewardList[i] += deathReward
       }
       else if (actionList[i] == 'left' && oldStateArray[2] == 1) {
-        rewardList[i] = deathReward
+        rewardList[i] += deathReward
       }
       else if (actionList[i] == 'right' && oldStateArray[3] == 1) {
-        rewardList[i] = deathReward
+        rewardList[i] += deathReward
       }
 
       if (rewardList[i] == deathReward) {
         dones[i] = true;
       }
 
-      // Move savedsnake based on the action in order to calculate distance
-
-
       savedsnake.move()
-      if (!dones[i] && !determineAmpleRemainingSpace(true)) {
+      if (!dones[i] && !determineAmpleRemainingSpace()) {
         qlearner.isTrapped = true;
-        rewardList[i] = deathReward
+        rewardList[i] += deathReward
       }
       newstates[i] = qlearner.getCurrentState()
       qlearner.isTrapped = false;
       let distanceIndex = 12;
       if (newstates[i].toArray()[distanceIndex] < oldState.toArray()[distanceIndex]) {
-        rewardList[i]+=closerReward;
+        rewardList[i] += closerReward;
       }
     }
 
@@ -338,8 +319,7 @@ function draw() {
     bestaction = qlearner.bestAction(oldState);
     doAction(bestaction, realsnake);
     qlearner.updateBrain(oldState, newstates, rewardList, dones);
-    determineAmpleRemainingSpace(false)
-    //frameRate(0)
+
     // Check apple and collisions
     checkEatingApple(realsnake, false)
     checkCollisions(realsnake, false)
@@ -351,6 +331,13 @@ function draw() {
 
     // Update the game
     realsnake.move();
+    /*
+    if (!determineAmpleRemainingSpace() && qlearner.snake.color.toString() != color(0, 0, 0).toString()) {
+      qlearner.snake.color = color(0, 0, 0)
+      console.log("Stuck")
+      //frameRate(0)
+    }
+*/
     drawSnake();
     inputUsed = false;
   }
@@ -367,7 +354,6 @@ function draw() {
 
     // Update the game
     realsnake.move()
-    determineAmpleRemainingSpace(realsnake)
     drawSnake();
     inputUsed = false;
   }

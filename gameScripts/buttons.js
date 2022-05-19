@@ -1,10 +1,5 @@
 ///////////////// Button Functions ///////////////////////
 // Change userInput and all appropriate HTML elements
-var set1 = []
-var set2 = []
-var set3 = []
-var set4 = []
-var contGraph;
 var slider_div
 var framerate;
 function toggleJimmy() {
@@ -15,7 +10,6 @@ function toggleJimmy() {
             setButtons()
 
             // Set headers from storage
-            document.getElementById("hidegraph").style.display = "none"
             document.getElementById("highscore").innerText = parseInt(window.localStorage.getItem("highscore"))
             document.getElementById("set-counter").innerText = "- Sets: " + parseInt(window.localStorage.getItem("sets"))
             document.getElementById("training-counter").innerText = "- Training: " + parseInt(window.localStorage.getItem("training"))
@@ -51,13 +45,6 @@ function resetJimmy() {
       window.localStorage.setItem("training", 0)
       window.localStorage.setItem("sets", 0)
 
-      // Wipe graphing data
-      set1 = []
-      set2 = []
-      set3 = []
-      set4 = []
-      hidegraph()
-
       // Reset HTML elements
       document.getElementById("training-counter").innerText = "- Trained: " + 0;
       document.getElementById("set-counter").innerText = "- Sets: " + 0;
@@ -68,34 +55,6 @@ function resetJimmy() {
       qlearner.brain = new Network(inputLayerSize, hiddenLayerSize, hiddenLayerSize, 4);
       uploadBrain()
       restartGame()
-}
-
-// Continually graph new data 
-function livegraph() {
-      document.getElementById("graph").style.display = "none";
-      graph()
-      contGraph = window.setInterval(graph, 2000);
-}
-
-// Create graph in HTML
-function graph() {
-      trialmarkers = []
-      for (let i = 0; i < set1.length; i++) {
-            trialmarkers.push(i)
-      }
-      //Plotly.newPlot("myDiv", [{ x: trialmarkers, y: set1, name: "Output Errors"}, { x: trialmarkers, y: set2, name: "H2 Errors" }, { x: trialmarkers, y: set3, name: "H1 Errors" }])
-      Plotly.newPlot("myDiv", [{ x: trialmarkers, y: set3 }], { title: { text: "Errors vs. Training Data" } })
-      document.getElementById("myDiv").style.display = "flex";
-      document.getElementById("hidegraph").style.display = "flex";
-      console.log("graphed")
-}
-
-// High the graph
-function hidegraph() {
-      clearInterval(contGraph)
-      document.getElementById("myDiv").style.display = "none";
-      document.getElementById("hidegraph").style.display = "none"
-      document.getElementById("graph").style.display = "flex";
 }
 
 // Create randomness and framerate sliders
@@ -161,18 +120,15 @@ function hideBrain() {
 function setButtons() {
       document.getElementById("togglejimmy").onclick = toggleJimmy
       document.getElementById("reset").onclick = resetJimmy
-      document.getElementById("graph").onclick = livegraph
-      document.getElementById("hidegraph").onclick = hidegraph
       document.getElementById("pause").onclick = pauseJimmy
       document.getElementById("play").onclick = playJimmy
       document.getElementById("viewbrain").onclick = viewBrain
       document.getElementById("hidebrain").onclick = hideBrain
+      document.getElementById("info").onclick = function () {window.open( 'README.html')}
       document.getElementById("pause").style.display = "flex"
       document.getElementById("viewbrain").style.display = "flex"
       document.getElementById("jimmybrainslider").style.display = "none"
-      document.getElementById("hidegraph").style.display = "none"
       document.getElementById("play").style.display = "none"
       document.getElementById("hidebrain").style.display = "none"
-      document.getElementById("graph").style.display = "none"
 }
     ///////////////// End Button Functions /////////////////////
