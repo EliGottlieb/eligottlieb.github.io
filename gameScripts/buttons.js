@@ -24,7 +24,6 @@ function toggleJimmy() {
       }
       else {
             userInput = true;
-            hidegraph()
             document.getElementById("jimmyinfo").style.display = "none"
             document.getElementById("jimmybrain").style.display = "none"
             document.getElementById("jimmybrainslider").style.display = "none"
