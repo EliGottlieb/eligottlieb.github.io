@@ -16,14 +16,15 @@ var genCount = 1;
 var randomize_slider;
 var speed_slider;
 
-var appleReward = .5
-var deathReward = -.5
-var closerReward = 0.2
+var appleReward = 10
+var deathReward = -20
+var closerReward = 2
+var trappedReward = -5
 var safeReward = 0
 var training = 0;
 var sets = 0;
 var hiddenLayerSize;
-var inputLayerSize = 14;
+var inputLayerSize = 16;
 var qlearner;
 
 
@@ -254,20 +255,23 @@ function draw() {
     }
 
     // Prepare for simulation, read sliders
-    let oldState = qlearner.getCurrentState();;
-    let oldStateArray = oldState.toArray()
-    let bestaction = null;
     framerate = framerate_slider.value()
     frameRate(framerate)
     qlearner.randomize = randomize_slider.value()
 
     // Initialize sim information
+    let oldState = qlearner.getCurrentState();;
+    let oldStateArray = oldState.toArray()
+    let bestaction = null;
+    let currentTrapArray = [0, 0, 0, 0]
     var actionList = ['up', 'down', 'left', 'right']
     var rewardList = [safeReward, safeReward, safeReward, safeReward]
     var newstates = [0, 0, 0, 0]
     var dones = [false, false, false, false]
     var savedsnake;
+    var shallowsnake;
 
+    // Simulate actions in actionList
     for (let i = 0; i < actionList.length; i++) {
       // Reassign the "active" snake as the reset savedsnake
       savedsnake = Snake.copy(realsnake)
@@ -283,7 +287,7 @@ function draw() {
 
       // Check is the simulated move results in a death
       if (actionList[i] == 'up' && oldStateArray[0] == 1) {
-        rewardList[i] = deathReward
+        rewardList[i] += deathReward
       }
       else if (actionList[i] == 'down' && oldStateArray[1] == 1) {
         rewardList[i] += deathReward
@@ -300,17 +304,55 @@ function draw() {
       }
 
       savedsnake.move()
+
+      // Save whether or not the simulated move resulted in a trapped snake
       if (!dones[i] && !determineAmpleRemainingSpace()) {
-        qlearner.isTrapped = true;
-        rewardList[i] += deathReward
+        rewardList[i] = trappedReward
+        currentTrapArray[i] = 1
       }
+
+      // Shallow sim next move from indicated sim'd move to determine temp trap array
+      let tempTrapArray = [0, 0, 0, 0]
+      if (!dones[i]) {
+        for (let j = 0; j < actionList.length; j++) {
+          shallowsnake = Snake.copy(savedsnake)
+          qlearner.snake = shallowsnake
+
+          // Do not need to check moves opposite to indicated sim'd move
+          if (actionList[i] == "up" && actionList[j] == "down") {
+            continue;
+          }
+          else if (actionList[i] == "down" && actionList[j] == "up") {
+            continue;
+          }
+          else if (actionList[i] == "left" && actionList[j] == "right") {
+            continue;
+          }
+          else if (actionList[i] == "right" && actionList[j] == "left") {
+            continue;
+          }
+
+          // Perform the action
+          doAction(actionList[i], shallowsnake)
+
+          shallowsnake.move()
+
+          // Save wehther or not the shallow simulated move resulted in a trapped state
+          if (!determineAmpleRemainingSpace()) {
+            tempTrapArray[j] = 1
+          }
+        }
+      }
+
+      qlearner.snake = savedsnake
       newstates[i] = qlearner.getCurrentState()
-      qlearner.isTrapped = false;
-      let distanceIndex = 12;
-      if (newstates[i].toArray()[distanceIndex] < oldState.toArray()[distanceIndex]) {
+      newstates[i].trappedState = tempTrapArray
+
+      if (savedsnake.distance < realsnake.distance) {
         rewardList[i] += closerReward;
       }
     }
+    oldState.trappedState = currentTrapArray
 
     // Reset qlearner's snake to realsnake 
     qlearner.snake = realsnake
@@ -331,13 +373,6 @@ function draw() {
 
     // Update the game
     realsnake.move();
-    /*
-    if (!determineAmpleRemainingSpace() && qlearner.snake.color.toString() != color(0, 0, 0).toString()) {
-      qlearner.snake.color = color(0, 0, 0)
-      console.log("Stuck")
-      //frameRate(0)
-    }
-*/
     drawSnake();
     inputUsed = false;
   }

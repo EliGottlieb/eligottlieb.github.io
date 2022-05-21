@@ -1,5 +1,5 @@
 const s = (p) => {
-    let canvasWidth = 700
+    let canvasWidth = 720
     let canvaseLength = 400
 
 
@@ -18,21 +18,22 @@ const s = (p) => {
         // The space between rows, columns, and the diameter of nodes
         let rowGap = 4
         let colGap = 170
-        let diameter = 20
+        let diameter = 16
 
         // The starting x, y, and vertical label distance
         let inputX = 120
-        let inputY = 60
+        let inputY = 50
         let labelY = 30
 
         // Label the input node column
+        p.strokeWeight(0.7)
         p.stroke(10)
         p.fill(0)
         let inputLabel = "Input Nodes"
         p.text(inputLabel, inputX - (p.textWidth(inputLabel) / 2), labelY)
 
         // Prepare labels for the input node rows
-        let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Distance to Food", "Trapped"]
+        let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Trapped Up", "Trapped Down", "Trapped Left", "Trapped Right"]
 
         // Draw the input nodes and create the labels
         var x = inputX
@@ -160,6 +161,24 @@ const s = (p) => {
             }
         }
     }
+
+    function drawKey() {
+        p.fill(0)
+        p.strokeWeight(0.3)
+        p.stroke(150)
+        let x = canvasWidth - 225
+        let y = canvaseLength - 60
+        let wordVerticalSpacing = 14
+        p.textSize(10)
+        p.textStyle(BOLD);
+        p.text("Neural Network Visualization Key", x, y)
+        p.textStyle(NORMAL);
+        p.text("○ Colors of lines represent weights of connections.", x, y += wordVerticalSpacing)
+        p.text("○ Colors of circles represent bias of neurons.", x, y += wordVerticalSpacing)
+        p.text("○ Red -> positive value, Blue -> negative value.", x, y += wordVerticalSpacing)
+        p.text("○ Darker color -> Further from zero.", x, y += wordVerticalSpacing)
+    }
+
     // Get display info for hidden layers, return in the form [diameter, rowGap]
     function getHiddenDisplayInfo(displayInterval, nodesNum, ratio, originalDiameter) {
         let diameter = (displayInterval) / (nodesNum * (1 + ratio) - (1 + ratio))
@@ -174,7 +193,9 @@ const s = (p) => {
 
     p.draw = function () {
         p.background(255);
+        //p.clear()
         drawBrain()
+        drawKey()
     }
 }
 var x = new p5(s, 'jimmybrain')

@@ -15,6 +15,7 @@ class Snake {
     this.color = color(128, 80, 200)
     this.randomizeColor()
     this.count = 0;
+    this.distance
   }
 
   randomizeColor() {
