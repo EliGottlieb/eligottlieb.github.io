@@ -26,11 +26,13 @@ const s = (p) => {
         let labelY = 30
 
         // Label the input node column
-        p.strokeWeight(0.7)
+        p.textStyle(BOLD);
+        p.strokeWeight(0.3)
         p.stroke(10)
         p.fill(0)
         let inputLabel = "Input Nodes"
         p.text(inputLabel, inputX - (p.textWidth(inputLabel) / 2), labelY)
+        p.stroke(10)
 
         // Prepare labels for the input node rows
         let inputlabels = ["Danger Up", "Danger Down", "Danger Left", "Danger Right", "Facing Up", "Facing Down", "Facing Left", "Facing Right", "Food Up", "Food Down", "Food Left", "Food Right", "Trapped Up", "Trapped Down", "Trapped Left", "Trapped Right"]
@@ -46,11 +48,13 @@ const s = (p) => {
             else if (Math.floor(qlearner.brain.input_nodes / 2) == i) {
                 mid = y
             }
+            p.strokeWeight(1)
             let temp = new Neuron(x, y, diameter)
             temp.display()
             input_neurons.push(temp)
             p.fill(0)
-            p.text(inputlabels[i], x - (textWidth(inputlabels[i] + diameter)), y + 4);
+            p.strokeWeight(0.3)
+            p.text(inputlabels[i], x - (textWidth(inputlabels[i] + diameter/2)), y + 4);
             y += (diameter + rowGap)
         }
 
@@ -78,6 +82,7 @@ const s = (p) => {
         p.fill(0)
         p.stroke(10)
         p.text(h1label, x - (p.textWidth(h1label) / 2), labelY)
+        p.strokeWeight(1)
 
         // Draw the hidden layer 1 nodes and fill in with biases
         for (let i = 0; i < qlearner.brain.hidden_nodes_1; i++) {
@@ -103,8 +108,10 @@ const s = (p) => {
         let bias_h2 = qlearner.brain.bias_h2.toArray()
         let h2label = "Hidden Layer 2"
         p.fill(0)
+        p.strokeWeight(0.3)
         p.stroke(10)
         p.text(h2label, x - textWidth(h2label) / 2, labelY)
+        p.strokeWeight(1)
         // Draw the hidden layer 1 nodes and fill in with biases
         for (let i = 0; i < qlearner.brain.hidden_nodes_2; i++) {
             let temp = new Neuron(x, y, hiddenDiameter, bias_h2[i])
@@ -135,6 +142,7 @@ const s = (p) => {
         let outputlabel = "Output Nodes"
         p.fill(0)
         p.stroke(10)
+        p.strokeWeight(0.3)
         p.text(outputlabel, x - textWidth(outputlabel) / 2, labelY)
 
         // Prepare labels for the output row nodes
@@ -144,8 +152,10 @@ const s = (p) => {
         for (let i = 0; i < qlearner.brain.output_nodes; i++) {
             p.fill(0)
             p.stroke(10)
+            p.strokeWeight(0.3)
             p.text(outputlabels[i], x + diameter, y + 3);
             let temp = new Neuron(x, y, diameter, bias_output[i])
+            p.strokeWeight(1)
             temp.display()
             output_neurons.push(temp)
             y += (diameter + rowGap)
