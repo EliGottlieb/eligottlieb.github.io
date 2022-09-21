@@ -1,5 +1,5 @@
 class Network {
-    constructor(input_nodes, hid1_nodes, hid2_nodes, output_nodes) {
+        constructor(input_nodes, hid1_nodes, hid2_nodes, output_nodes) {
         this.input_nodes = input_nodes;
         this.hidden_nodes_1 = hid1_nodes;
         this.hidden_nodes_2 = hid2_nodes;

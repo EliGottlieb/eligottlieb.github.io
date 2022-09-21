@@ -195,7 +195,9 @@ function determineAmpleRemainingSpace() {
       continue;
     }
     availableSquaresSet.add(current.toString());
-    if (availableSquaresSet.size >= sn.squares.length) {
+    // sn.squares.length
+    if (availableSquaresSet.size >= (((canvasHeight * canvasWidth) / squareWidth) - sn.squares.length) / 10) {
+      
       return true;
     }
     let leftSquare = new Square(current.x - oneHorizontalTile, current.y, squareWidth);
@@ -306,6 +308,12 @@ function draw() {
       savedsnake.move()
 
       // Save whether or not the simulated move resulted in a trapped snake
+      let worker = new Worker('gameScripts/space.js')
+      worker.postMessage([qlearner.snake], xOffset, yOffset, squareWidth)
+      worker.onmessage = (e) => {
+        console.log(e.data)
+      }
+      worker.terminate;
       if (!dones[i] && !determineAmpleRemainingSpace()) {
         rewardList[i] = trappedReward
         currentTrapArray[i] = 1
