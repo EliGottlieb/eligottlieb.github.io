@@ -52,28 +52,6 @@ function checkCollisions(sn) {
   gameOver = gO
 }
 
-function checkCollisionsForBFS(sn, sq) {
-  // Define wall collisions
-  let hitRightWall = (sq.x >= canvasWidth)
-  let hitLeftWall = (sq.x < 0)
-  let hitBottomWall = (sq.y >= canvasHeight);
-  let hitTopWall = (sq.y < 0);
-
-  // Define snake collisions
-  let hittingSelf = false;
-  for (let i = 0; i < sn.squares.length - 1; i++) {
-    let tempsq = sn.squares[i];
-    if ((tempsq.x == sq.x) && (tempsq.y == sq.y)) {
-      hittingSelf = true;
-      break;
-    }
-  }
-  if (hitRightWall || hitLeftWall || hitBottomWall || hitTopWall || hittingSelf) {
-    return true;
-  }
-  return false;
-}
-
 function checkEatingApple(sn, sim) {
   if ((sn.head.x == apple.square.x) && (sn.head.y == apple.square.y)) {
     if (sim) {
@@ -197,7 +175,7 @@ function determineAmpleRemainingSpace() {
     availableSquaresSet.add(current.toString());
     // sn.squares.length
     if (availableSquaresSet.size >= (((canvasHeight * canvasWidth) / squareWidth) - sn.squares.length) / 10) {
-      
+
       return true;
     }
     let leftSquare = new Square(current.x - oneHorizontalTile, current.y, squareWidth);
@@ -309,12 +287,17 @@ function draw() {
 
       // Save whether or not the simulated move resulted in a trapped snake
       let worker = new Worker('gameScripts/space.js')
-      worker.postMessage([qlearner.snake], xOffset, yOffset, squareWidth)
+      let ampleSpace = false;
+      worker.postMessage({ snake: qlearner.snake, xOffset: xOffset, yOffset: yOffset, squareWidth: squareWidth, canvasHeight: canvasHeight, canvasWidth: canvasWidth })
       worker.onmessage = (e) => {
-        console.log(e.data)
+        //console.log("This is the informaiton from the worker.")
+        //console.log(e.data)
+        ampleSpace = e.data
+        console.log(ampleSpace == true)
       }
-      worker.terminate;
-      if (!dones[i] && !determineAmpleRemainingSpace()) {
+      worker.terminate();
+      //frameRate(0)
+      if (!dones[i] && !ampleSpace) {
         rewardList[i] = trappedReward
         currentTrapArray[i] = 1
       }
@@ -346,7 +329,16 @@ function draw() {
           shallowsnake.move()
 
           // Save wehther or not the shallow simulated move resulted in a trapped state
-          if (!determineAmpleRemainingSpace()) {
+          let worker = new Worker('gameScripts/space.js')
+          let ampleSpace = false;
+          worker.postMessage({ snake: qlearner.snake, xOffset: xOffset, yOffset: yOffset, squareWidth: squareWidth, canvasHeight: canvasHeight, canvasWidth: canvasWidth })
+          worker.onmessage = (e) => {
+            //console.log("This is the informaiton from the worker.")
+            //console.log(e.data)
+            ampleSpace = e.data
+          }
+          worker.terminate();
+          if (!ampleSpace) {
             tempTrapArray[j] = 1
           }
         }
