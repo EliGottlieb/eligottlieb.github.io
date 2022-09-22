@@ -202,8 +202,8 @@ const s = (p) => {
     }
 
     p.draw = function () {
-        p.background(200);
-        //p.clear()
+        //p.background();
+        p.clear()
         drawBrain()
         drawKey()
     }
@@ -218,7 +218,7 @@ class Neuron {
         this.radius = diameter / 2
         this.bais = bais;
         if (bais == null) {
-            this.opacity = [200]
+            this.opacity = [100]
         }
         else {
             this.opacity = mapToOpacity(bais)
@@ -270,35 +270,3 @@ function mapToOpacity(x) {
         return [0, 0, 255, newVal]
     return [255, 0, 0, newVal]
 }
-
-////////////////// Unused util ////////////////
-/*
-function onNeuron(x, y) {
-    console.log("This is x: " + x + ". This is y: " + y + ".")
-    for (let i = 0; i < output_neurons.length; i++) {
-        console.log("(" + output_neurons[i].x + ", " + output_neurons[i].y + ")")
-        let dist = Math.sqrt(Math.pow(x - output_neurons[i].x, 2) + Math.pow(y - output_neurons[i].y, 2))
-        if (dist < output_neurons[i].radius) {
-            console.log(i)
-            return [true, i]
-        }
-    }
-    return [false, -1]
-}
-
-    p.mouseClicked = function () {
-        let onNeuronResult = onNeuron(p.mouseX, p.mouseY)
-        if (onNeuronResult[0]) {
-            output_neurons[onNeuronResult[1]].clicked()
-        }
-    }
-
-        clicked() {
-        x.frameRate(0)
-
-        this.opacity = [200]
-        this.x+=10
-        this.display()
-        
-    }
-    */
