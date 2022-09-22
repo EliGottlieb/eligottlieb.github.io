@@ -1,7 +1,6 @@
 ///////////////// Button Functions ///////////////////////
 // Change userInput and all appropriate HTML elements
 var slider_div
-var framerate;
 function toggleJimmy() {
       if (userInput) {
             userInput = false
@@ -30,7 +29,6 @@ function toggleJimmy() {
             slider_div.style("display", "none")
             highscore = 0;
             document.getElementById("highscore").innerText = highscore
-            frameRate(30)
             restartGame()
       }
 }
@@ -56,7 +54,6 @@ function resetJimmy() {
       restartGame()
 }
 
-// Create randomness and framerate sliders
 function createSliders() {
       // Create outside div
       slider_div = createDiv();
@@ -70,23 +67,6 @@ function createSliders() {
       hls_slider.parent(document.getElementById("jimmybrainslider"))
       hls_slider.elt.style.flex = 1
       hls_slider.elt.style.marginRight = "20px"
-      // Create randomness label
-      randomize_label = createSpan('Randomness: ');
-      randomize_label.parent(slider_div);
-      randomize_label.elt.style.flex = 1
-      // Create randomness slider
-      randomize_slider = createSlider(0, 1, 0, .1)
-      randomize_slider.parent(slider_div)
-      randomize_slider.elt.style.flex = 1
-      randomize_slider.elt.style.marginRight = "20px"
-      // Create framerate label
-      framerate_label = createSpan('Framerate: ');
-      framerate_label.parent(slider_div)
-      framerate_label.elt.style.flex = 1
-      // Create framerate slider
-      framerate_slider = createSlider(1, 60, 60, 1)
-      framerate_slider.parent(slider_div)
-      framerate_slider.elt.style.flex = 1
 }
 
 function pauseJimmy() {
@@ -96,7 +76,7 @@ function pauseJimmy() {
 }
 
 function playJimmy() {
-      frameRate(framerate)
+      frameRate(60)
       document.getElementById("pause").style.display = "flex"
       document.getElementById("play").style.display = "none"
 }

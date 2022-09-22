@@ -214,7 +214,7 @@ function determineAmpleRemainingSpace() {
 
 //////////////// P5 Functions /////////////////////////////////////////////////
 function setup() {
-  
+  frameRate(60)
 
   // Setup for buttons and sliders
   document.getElementById("jimmybrain").style.display = "none"
@@ -226,8 +226,6 @@ function setup() {
     document.getElementById("highscore").innerText = highscore
     slider_div.style("display", "none")
     document.getElementById("jimmyinfo").style.display = "none"
-    frameRate(30)
-    framerate = 30;
   }
   else {
     // Set headers from storage
@@ -239,6 +237,7 @@ function setup() {
 
     // Create qlearner and set brain to brain informaiton saved in storage
     qlearner = new QLearner(realsnake, apple);
+
     downloadBrain()
   }
 
@@ -258,9 +257,8 @@ function draw() {
     }
 
     // Prepare for simulation, read sliders
-    framerate = framerate_slider.value()
-    frameRate(framerate)
-    qlearner.randomize = randomize_slider.value()
+    frameRate(60)
+    qlearner.randomize = 0
 
     // Initialize sim information
     let oldState = qlearner.getCurrentState();;

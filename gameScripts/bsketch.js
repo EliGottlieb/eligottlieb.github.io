@@ -1,7 +1,6 @@
 const s = (p) => {
-    let canvasWidth = 720
-    let canvaseLength = 400
-
+    let canvasWidth = 700
+    let canvaseLength = 400 
 
     function drawBrain() {
         // Hold neuron objects

@@ -42,29 +42,14 @@ body {
 #container {
     position: relative;
     width: 100%;
-    margin-left: 10px;
+    
 }
 
 #jimmybrain {
-
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     margin: 0px;
-    padding: 0px;
 }
-
-/*
-  #gameCanvas,
-  #brain {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  #brain {
-    z-index: 10;
-  } */
