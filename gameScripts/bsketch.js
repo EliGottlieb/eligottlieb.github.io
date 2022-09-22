@@ -202,7 +202,7 @@ const s = (p) => {
     }
 
     p.draw = function () {
-        p.background(255);
+        p.background(200);
         //p.clear()
         drawBrain()
         drawKey()

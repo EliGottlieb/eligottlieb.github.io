@@ -214,6 +214,8 @@ function determineAmpleRemainingSpace() {
 
 //////////////// P5 Functions /////////////////////////////////////////////////
 function setup() {
+  
+
   // Setup for buttons and sliders
   document.getElementById("jimmybrain").style.display = "none"
   setButtons()
@@ -242,7 +244,8 @@ function setup() {
 
   // Create canvas
   let dimensions = calculateCanvasSize();
-  createCanvas(dimensions.canvasWidth, dimensions.canvasHeight);
+  var canvas = createCanvas(dimensions.canvasWidth, dimensions.canvasHeight);
+  canvas.parent("gameCanvas")
   restartGame();
 }
 
