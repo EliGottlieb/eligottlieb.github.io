@@ -103,7 +103,7 @@ function setButtons() {
       document.getElementById("play").onclick = playJimmy
       document.getElementById("viewbrain").onclick = viewBrain
       document.getElementById("hidebrain").onclick = hideBrain
-      document.getElementById("info").onclick = function () {window.open( 'README.html')}
+      //document.getElementById("info").onclick = function () {window.open( 'README.html')}
       document.getElementById("pause").style.display = "flex"
       document.getElementById("viewbrain").style.display = "flex"
       document.getElementById("jimmybrainslider").style.display = "none"

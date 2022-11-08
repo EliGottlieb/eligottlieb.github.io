@@ -13,8 +13,6 @@ var isDrawBrain = true;
 var score = 0;
 var userhighscore = 0;
 var genCount = 1;
-var randomize_slider;
-var speed_slider;
 
 var appleReward = 10
 var deathReward = -20
