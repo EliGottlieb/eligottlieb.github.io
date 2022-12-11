@@ -53,3 +53,10 @@ body {
     bottom: 0;
     margin: 0px;
 }
+
+.btn {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-color: black;
+    margin: 1px;
+}

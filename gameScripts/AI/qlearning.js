@@ -180,13 +180,13 @@ class QLearner {
             // Update global set counter
             let globaltrainingcount = parseInt(window.localStorage.getItem("training"))
             globaltrainingcount += Object.keys(this.experienceRelay).length
-            document.getElementById("training-counter").innerText = "- Trained: " + globaltrainingcount;
+            document.getElementById("training-counter").innerText = " Trained: " + globaltrainingcount;
             window.localStorage.setItem("training", globaltrainingcount)
             
             // Update global training counter
             let globalsetcount = parseInt(window.localStorage.getItem("sets"))
             globalsetcount++;
-            document.getElementById("set-counter").innerText = "- Sets: " + globalsetcount;
+            document.getElementById("set-counter").innerText = " Sets: " + globalsetcount;
             window.localStorage.setItem("sets", globalsetcount)
             
             // Train network on each pair of state and qVals

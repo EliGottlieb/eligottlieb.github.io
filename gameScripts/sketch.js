@@ -230,8 +230,8 @@ function setup() {
     hiddenLayerSize = hls_slider.value()
     document.getElementById("jimmyinfo").style.display = "flex"
     document.getElementById("highscore").innerText = parseInt(window.localStorage.getItem("highscore"))
-    document.getElementById("set-counter").innerText = "- Sets: " + parseInt(window.localStorage.getItem("sets"))
-    document.getElementById("training-counter").innerText = "- Training: " + parseInt(window.localStorage.getItem("training"))
+    document.getElementById("set-counter").innerText = "Sets: " + parseInt(window.localStorage.getItem("sets"))
+    document.getElementById("training-counter").innerText = "Training: " + parseInt(window.localStorage.getItem("training"))
 
     // Create qlearner and set brain to brain informaiton saved in storage
     qlearner = new QLearner(realsnake, apple);

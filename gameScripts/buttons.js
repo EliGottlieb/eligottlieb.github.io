@@ -10,8 +10,8 @@ function toggleJimmy() {
 
             // Set headers from storage
             document.getElementById("highscore").innerText = parseInt(window.localStorage.getItem("highscore"))
-            document.getElementById("set-counter").innerText = "- Sets: " + parseInt(window.localStorage.getItem("sets"))
-            document.getElementById("training-counter").innerText = "- Training: " + parseInt(window.localStorage.getItem("training"))
+            document.getElementById("set-counter").innerText = "Sets: " + parseInt(window.localStorage.getItem("sets"))
+            document.getElementById("training-counter").innerText = "Training: " + parseInt(window.localStorage.getItem("training"))
 
             // Create qlearner and set brain to brain informaiton saved in storage
             qlearner = new QLearner(realsnake, apple);
@@ -43,10 +43,10 @@ function resetJimmy() {
       window.localStorage.setItem("sets", 0)
 
       // Reset HTML elements
-      document.getElementById("training-counter").innerText = "- Trained: " + 0;
-      document.getElementById("set-counter").innerText = "- Sets: " + 0;
+      document.getElementById("training-counter").innerText = "Trained: " + 0;
+      document.getElementById("set-counter").innerText = "Sets: " + 0;
       document.getElementById("highscore").innerText = 0;
-      document.getElementById("generation-counter").innerText = "- Jimmy's: " + 0;
+      document.getElementById("generation-counter").innerText = "Jimmy's: " + 0;
 
       // Create new brain and overwrite old brain
       qlearner.brain = new Network(inputLayerSize, hiddenLayerSize, hiddenLayerSize, 4);
@@ -103,7 +103,6 @@ function setButtons() {
       document.getElementById("play").onclick = playJimmy
       document.getElementById("viewbrain").onclick = viewBrain
       document.getElementById("hidebrain").onclick = hideBrain
-      document.getElementById("info").onclick = function () {window.open( 'README.html')}
       document.getElementById("pause").style.display = "flex"
       document.getElementById("viewbrain").style.display = "flex"
       document.getElementById("jimmybrainslider").style.display = "none"
