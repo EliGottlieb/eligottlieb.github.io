@@ -39,10 +39,10 @@ body {
     margin: 0;
 }
 
-#container {
+.modal-content {
     position: relative;
-    width: 100%;
-    
+    width: 800px;
+    height: 500px;
 }
 
 #jimmybrain {
