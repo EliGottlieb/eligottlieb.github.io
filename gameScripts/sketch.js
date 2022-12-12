@@ -222,12 +222,13 @@ function setup() {
   if (userInput) {
     highscore = 0;
     document.getElementById("highscore").innerText = highscore
-    slider_div.style("display", "none")
+    sliderDiv.style("display", "none")
     document.getElementById("jimmyinfo").style.display = "none"
   }
   else {
     // Set headers from storage
     hiddenLayerSize = hls_slider.value()
+    document.getElementById("slideroutput").innerText = hiddenLayerSize
     document.getElementById("jimmyinfo").style.display = "flex"
     document.getElementById("highscore").innerText = parseInt(window.localStorage.getItem("highscore"))
     document.getElementById("set-counter").innerText = "Sets: " + parseInt(window.localStorage.getItem("sets"))
@@ -251,6 +252,7 @@ function draw() {
     // If hidden layer size has changed, reset hiddenLayerSize and reset Jimmy
     if (hls_slider.value() != hiddenLayerSize) {
       hiddenLayerSize = hls_slider.value()
+      document.getElementById("slideroutput").innerText = hiddenLayerSize
       resetJimmy()
     }
 

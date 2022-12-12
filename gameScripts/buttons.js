@@ -1,11 +1,11 @@
 ///////////////// Button Functions ///////////////////////
 // Change userInput and all appropriate HTML elements
-var slider_div
+var sliderDiv
 function toggleJimmy() {
       if (userInput) {
             userInput = false
             document.getElementById("jimmyinfo").style.display = "flex"
-            slider_div.style("display", "flex")
+            sliderDiv.style("display", "flex")
             setButtons()
 
             // Set headers from storage
@@ -26,7 +26,7 @@ function toggleJimmy() {
             document.getElementById("jimmyinfo").style.display = "none"
             document.getElementById("jimmybrain").style.display = "none"
             document.getElementById("jimmybrainslider").style.display = "none"
-            slider_div.style("display", "none")
+            sliderDiv.style("display", "none")
             highscore = 0;
             document.getElementById("highscore").innerText = highscore
             restartGame()
@@ -56,17 +56,15 @@ function resetJimmy() {
 
 function createSliders() {
       // Create outside div
-      slider_div = createDiv();
-      slider_div.elt.style.display = "flex"
-      // Create hidden layer size label
-      hls_label = createSpan('Brainpower: ');
-      hls_label.parent(document.getElementById("jimmybrainslider"));
-      hls_label.elt.style.flex = 1
+      sliderDiv = createDiv();
+      sliderDiv.elt.style.display = "block"
+
       // Create hidden layer size slider
       hls_slider = createSlider(1, 60, 30, 1)
       hls_slider.parent(document.getElementById("jimmybrainslider"))
       hls_slider.elt.style.flex = 1
-      hls_slider.elt.style.marginRight = "20px"
+      console.log(hls_slider)
+      hls_slider.addClass("align-middle")
 }
 
 function pauseJimmy() {
@@ -83,7 +81,7 @@ function playJimmy() {
 
 function viewBrain() {
       document.getElementById("jimmybrain").style.display = "flex"
-      document.getElementById("jimmybrainslider").style.display = "flex"
+      document.getElementById("jimmybrainslider").style.display = "block"
       document.getElementById("viewbrain").style.display = "none"
       document.getElementById("hidebrain").style.display = "flex"
 }
