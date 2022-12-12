@@ -82,15 +82,6 @@ function playJimmy() {
 function viewBrain() {
       document.getElementById("jimmybrain").style.display = "flex"
       document.getElementById("jimmybrainslider").style.display = "block"
-      document.getElementById("viewbrain").style.display = "none"
-      document.getElementById("hidebrain").style.display = "flex"
-}
-
-function hideBrain() {
-      document.getElementById("jimmybrain").style.display = "none"
-      document.getElementById("jimmybrainslider").style.display = "none"
-      document.getElementById("viewbrain").style.display = "flex"
-      document.getElementById("hidebrain").style.display = "none"
 }
 
 // Create event listeners and onclick functions for all buttons
@@ -100,11 +91,9 @@ function setButtons() {
       document.getElementById("pause").onclick = pauseJimmy
       document.getElementById("play").onclick = playJimmy
       document.getElementById("viewbrain").onclick = viewBrain
-      document.getElementById("hidebrain").onclick = hideBrain
       document.getElementById("pause").style.display = "flex"
       document.getElementById("viewbrain").style.display = "flex"
       document.getElementById("jimmybrainslider").style.display = "none"
       document.getElementById("play").style.display = "none"
-      document.getElementById("hidebrain").style.display = "none"
 }
     ///////////////// End Button Functions /////////////////////

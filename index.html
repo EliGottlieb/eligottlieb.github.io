@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -12,76 +11,49 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<row>
-  <div id="basicinfo">
-    <col>
+    <span id="basicinfo">
       <span> Score: </span>
       <var id="score-counter" class="align-middle" style="margin-right: 10px;"> 0 </var>
-    </col>
-    <col>
       <span>High Score: </span>
       <var id="highscore" class="align-middle" style="margin-right: 10px;"> 0 </var>
-    </col>
-    <col>
       <button type="botton" class="btn btn-light btn-sm" id="togglejimmy">Toggle Jimmy</button>
-    </col>
-  </div>
-</row>
-<row>
-  <div id="jimmyinfo">
-    <col>
-      <div id="generation-counter" style="margin-right: 10px; margin-left: 10px"> </div>
-    </col>
-    <col>
-      <div id="set-counter" style="margin-right: 10px; margin-left: 10px"> </div>
-    </col>
-    <col>
-      <div id="training-counter" style="margin-right: 10px; margin-left: 10px"> </div>
-    </col>
-    <col>
+    </span>
+    <span id="jimmyinfo">
+      <span id="generation-counter" style="margin-right: 10px; margin-left: 10px"> </span>
+      <span id="set-counter" style="margin-right: 10px; margin-left: 10px"> </span>
+      <span id="training-counter" style="margin-right: 10px; margin-left: 10px"> </span>
       <button type="button" class="btn btn-light btn-sm" id="reset">Wipe Jimmy :(</button>
-    </col>
-    <col>
       <button type="button" class="btn btn-light btn-sm" id="pause">Pause Jimmy</button>
       <button type="button" class="btn btn-light btn-sm" id="play">Play Jimmy</button>
-    </col>
-    <col>
       <button type="button" class="btn btn-light btn-sm" id="viewbrain" data-bs-toggle="modal" data-bs-target="#brainmodal">View Brain</button>
-      <button type="button" class="btn btn-light btn-sm" id="hidebrain">Hide Brain</button>
-    </col>
-  </div>
-</row>
-
-<!-- Modal -->
-<div id="container">
-  <div class="modal fade" id="brainmodal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title">Jimmy's Brain</h5>
-          <button type="button" id="closemodal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="container-fluid text-dark">
-            <row>
-              <span id="sliderlabel">Nodes Per Hidden Layer: </span>
-              <span id="slideroutput"></span>
-            </row>
-            <row>
-                <span id="jimmybrainslider"></span>
-            </row>
-            <row>
-              <div id="jimmybrain"></div>
-            </row>
+    </span>
+  <div id="container">
+    <div class="modal fade" id="brainmodal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Jimmy's Brain</h5>
+            <button type="button" id="closemodal" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid text-dark">
+              <row>
+                <span id="sliderlabel">Nodes Per Hidden Layer: </span>
+                <span id="slideroutput"></span>
+              </row>
+              <row>
+                  <span id="jimmybrainslider"></span>
+              </row>
+              <row>
+                <div id="jimmybrain"></div>
+              </row>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<span id="gameCanvas"></span>
-
-
+  <span id="gameCanvas"></span>
 
   <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -100,7 +72,6 @@
   <script src="gameScripts/AI/Network.js"></script>
   <script src="gameScripts/AI/Matrix.js"></script>
   <script src="gameScripts/AI/qlearning.js"></script>
-  <div id='myDiv'></div>
 </body>
 
 </html>

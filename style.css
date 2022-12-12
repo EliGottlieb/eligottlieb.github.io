@@ -48,6 +48,6 @@ body {
 .btn {
     padding-top: 1px;
     padding-bottom: 1px;
-    border-color: black;
+    /* border-color: black; */
     margin: 1px;
 }
