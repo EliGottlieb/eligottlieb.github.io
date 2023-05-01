@@ -2,10 +2,10 @@ let qLearningRate = 0.9;
 let qDiscountFactor = 0.85;
 
 class QLearner {
-    constructor(sn, apple) {
+    constructor(apple) {
         this.brain = new Network(inputLayerSize, hiddenLayerSize, hiddenLayerSize, 4);
         this.targetbrain = this.brain
-        this.snake = sn;
+        this.snake = new Snake();
         this.apple = apple;
         this.availableActions = ['up', 'down', 'left', 'right'];
         this.experienceRelay = {};
@@ -14,7 +14,7 @@ class QLearner {
         this.moves = 0;
     }
 
-    getCurrentState() {
+    getCurrentState(opponent) {
         // Get direction of snake
         let xDir = this.snake.xDir[this.snake.xDir.length - 1];
         let yDir = this.snake.yDir[this.snake.yDir.length - 1];
@@ -68,8 +68,24 @@ class QLearner {
         // Check near walls
         if (head.x == 0) dangerLeft = 1;
         if (head.y == 0) dangerUp = 1;
-        if (onRightEdge()) dangerRight = 1;
-        if (onBottomEdge()) dangerDown = 1;
+        if (onRightEdge(this.snake)) dangerRight = 1;
+        if (onBottomEdge(this.snake)) dangerDown = 1;
+
+        // Check near snake
+        if (opponent != null)
+            for (let i = 0; i < opponent.squares.length; i++) {
+                dist =  Math.abs(head.x - opponent.squares[i].x) + Math.abs(head.y - opponent.squares[i].y)
+                if (dist > 1)
+                    continue;
+                elseif (head.x - opponent.squares[i].x == 1)
+                    dangerLeft = 1;
+                elseif (head.x - opponent.squares[i].x == -1)
+                    dangerRight = 1;
+                elseif (head.y - opponent.squares[i].y == 1)
+                    dangerUp = 1;
+                elseif (head.y - opponent.squares[i].y == -1)
+                    dangerDown = 1;
+            }
 
         // Check near itself
         for (let i = 0; i < this.snake.squares.length; i++) {

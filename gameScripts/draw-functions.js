@@ -10,22 +10,22 @@ function drawRect(x, y, w, h, clr) {
   rect(x, y, w, h);
 }
 
-function drawSnake() {
-  drawSquare(realsnake.oldTail, color(255, 255, 255));
-  drawOffset(realsnake.oldTail, realsnake.oldTailxDir, realsnake.oldTailyDir, color(255, 255, 255));
-  drawSquare(realsnake.head, realsnake.color);
-  drawOffset(realsnake.squares[realsnake.squares.length - 2], realsnake.xDir[realsnake.xDir.length - 2], realsnake.yDir[realsnake.yDir.length - 2], realsnake.color);
+function drawSnake(sn) {
+  drawSquare(sn.oldTail, color(255, 255, 255));
+  drawOffset(sn.oldTail, sn.oldTailxDir, sn.oldTailyDir, color(255, 255, 255));
+  drawSquare(sn.head, sn.color);
+  drawOffset(sn.squares[sn.squares.length - 2], sn.xDir[sn.xDir.length - 2], sn.yDir[sn.yDir.length - 2], sn.color);
 }
 
-function drawSnakeComplete() {
+function drawSnakeComplete(sn) {
   // Draw Squares
-  for (let i = 0; i < realsnake.squares.length; i++) {
-    let tempsq = realsnake.squares[i];
-    drawSquare(tempsq, realsnake.color);
+  for (let i = 0; i < sn.squares.length; i++) {
+    let tempsq = sn.squares[i];
+    drawSquare(tempsq, sn.color);
   }
   // Fill offsets
-  for (let i = 0; i < realsnake.squares.length - 1; i++) {
-    drawOffset(realsnake.squares[i], realsnake.xDir[i], realsnake.yDir[i], realsnake.color);
+  for (let i = 0; i < sn.squares.length - 1; i++) {
+    drawOffset(sn.squares[i], sn.xDir[i], sn.yDir[i], sn.color);
   }
 }
 

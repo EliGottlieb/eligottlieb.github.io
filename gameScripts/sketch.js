@@ -5,6 +5,7 @@ var canvasWidth
 var canvasHeight
 var fr;
 var realsnake;
+var op_realsnake
 var apple;
 var gameOver = false;
 var inputUsed = false;
@@ -150,13 +151,13 @@ function doAction(action, sn) {
   }
 }
 
-function onRightEdge() {
-  if (realsnake.head.x + squareWidth >= width) return true;
+function onRightEdge(sn) {
+  if (sn.head.x + squareWidth >= width) return true;
   else return false;
 }
 
-function onBottomEdge() {
-  if (realsnake.head.y + squareWidth >= height) return true;
+function onBottomEdge(sn) {
+  if (sn.head.y + squareWidth >= height) return true;
   else return false;
 }
 
@@ -168,9 +169,8 @@ function getTotalOpenSquares(sn) {
 }
 
 // isChecked should display current if true
-function determineAmpleRemainingSpace() {
+function determineAmpleRemainingSpace(sn) {
   // Queue to hold squares
-  let sn = qlearner.snake
   let q = new Queue();
   q.enqueue(sn.head);
 
@@ -235,9 +235,11 @@ function setup() {
     document.getElementById("training-counter").innerText = "Training: " + parseInt(window.localStorage.getItem("training"))
 
     // Create qlearner and set brain to brain informaiton saved in storage
-    qlearner = new QLearner(realsnake, apple);
-
+    qlearner = new QLearner(apple);
+    realsnake = qlearner.snake
     downloadBrain()
+    op_qlearner = new QLearner(apple)
+    op_realsnake = op_qlearner.snake
   }
 
   // Create canvas
@@ -259,6 +261,7 @@ function draw() {
     // Prepare for simulation, read sliders
     frameRate(60)
     qlearner.randomize = 0
+    frameRate(0)
 
     // Initialize sim information
     let oldState = qlearner.getCurrentState();;
@@ -307,7 +310,7 @@ function draw() {
       savedsnake.move()
 
       // Save whether or not the simulated move resulted in a trapped snake
-      if (!dones[i] && !determineAmpleRemainingSpace()) {
+      if (!dones[i] && !determineAmpleRemainingSpace(qlearner.snake)) {
         rewardList[i] = trappedReward
         currentTrapArray[i] = 1
       }
@@ -339,7 +342,7 @@ function draw() {
           shallowsnake.move()
 
           // Save wehther or not the shallow simulated move resulted in a trapped state
-          if (!determineAmpleRemainingSpace()) {
+          if (!determineAmpleRemainingSpace(qlearner.snake)) {
             tempTrapArray[j] = 1
           }
         }
@@ -374,7 +377,7 @@ function draw() {
 
     // Update the game
     realsnake.move();
-    drawSnake();
+    drawSnake(realsnake);
     inputUsed = false;
   }
   else {
@@ -390,7 +393,8 @@ function draw() {
 
     // Update the game
     realsnake.move()
-    drawSnake();
+    drawSnake(realsnake);
+    drawSnake(op_realsnake)
     inputUsed = false;
   }
 }
@@ -421,7 +425,7 @@ function restartGame() {
   score = resetscore
   document.getElementById("score-counter").innerText = resetscore;
   background(255);
-  drawSnakeComplete();
+  drawSnakeComplete(realsnake);
   drawSquare(apple.square, color(255, 0, 0));
   gameOver = false;
 }
