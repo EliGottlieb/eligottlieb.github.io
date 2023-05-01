@@ -5,6 +5,7 @@ var canvasWidth
 var canvasHeight
 var fr;
 var realsnake;
+var op_realsnake
 var apple;
 var gameOver = false;
 var inputUsed = false;
@@ -150,13 +151,13 @@ function doAction(action, sn) {
   }
 }
 
-function onRightEdge() {
-  if (realsnake.head.x + squareWidth >= width) return true;
+function onRightEdge(sn) {
+  if (sn.head.x + squareWidth >= width) return true;
   else return false;
 }
 
-function onBottomEdge() {
-  if (realsnake.head.y + squareWidth >= height) return true;
+function onBottomEdge(sn) {
+  if (sn.head.y + squareWidth >= height) return true;
   else return false;
 }
 
@@ -168,9 +169,8 @@ function getTotalOpenSquares(sn) {
 }
 
 // isChecked should display current if true
-function determineAmpleRemainingSpace() {
+function determineAmpleRemainingSpace(sn) {
   // Queue to hold squares
-  let sn = qlearner.snake
   let q = new Queue();
   q.enqueue(sn.head);
 
@@ -235,9 +235,11 @@ function setup() {
     document.getElementById("training-counter").innerText = "Training: " + parseInt(window.localStorage.getItem("training"))
 
     // Create qlearner and set brain to brain informaiton saved in storage
-    qlearner = new QLearner(realsnake, apple);
-
+    qlearner = new QLearner(0, apple);
+    realsnake = qlearner.snake
     downloadBrain()
+    op_qlearner = new QLearner(1, apple)
+    op_realsnake = op_qlearner.snake
   }
 
   // Create canvas
@@ -307,7 +309,7 @@ function draw() {
       savedsnake.move()
 
       // Save whether or not the simulated move resulted in a trapped snake
-      if (!dones[i] && !determineAmpleRemainingSpace()) {
+      if (!dones[i] && !determineAmpleRemainingSpace(qlearner.snake)) {
         rewardList[i] = trappedReward
         currentTrapArray[i] = 1
       }
@@ -339,7 +341,7 @@ function draw() {
           shallowsnake.move()
 
           // Save wehther or not the shallow simulated move resulted in a trapped state
-          if (!determineAmpleRemainingSpace()) {
+          if (!determineAmpleRemainingSpace(qlearner.snake)) {
             tempTrapArray[j] = 1
           }
         }
@@ -366,6 +368,8 @@ function draw() {
     // Check apple and collisions
     checkEatingApple(realsnake, false)
     checkCollisions(realsnake, false)
+    checkEatingApple(op_realsnake, false)
+    checkCollisions(op_realsnake, false)
     if (gameOver) {
       genCount++;
       restartGame();
@@ -374,9 +378,15 @@ function draw() {
 
     // Update the game
     realsnake.move();
-    drawSnake();
+    drawSnake(realsnake);
+
+    doAction('down', op_realsnake)
+    op_realsnake.move();
+    drawSnake(op_realsnake)
     inputUsed = false;
   }
+
+  // User Input
   else {
     // Check if eating apple
     checkEatingApple(realsnake, false)
@@ -390,21 +400,27 @@ function draw() {
 
     // Update the game
     realsnake.move()
-    drawSnake();
+    drawSnake(realsnake);
+    drawSnake(op_realsnake)
     inputUsed = false;
   }
 }
 
 function restartGame() {
   // Reset snake and apple
-  realsnake = new Snake();
+  realsnake = new Snake(0);
+  op_realsnake = new Snake(1)
   apple = new Apple();
 
   if (!userInput) {
-    savedsnake = new Snake();
+    savedsnake = new Snake(0);
+    op_realsnake = new Snake(1)
+    op_realsnake.squares = [new Square(300, 0, 20), new Square(325, 0, 20), new Square(350, 0, 20)]
     // Re-save snake and apple
     qlearner.snake = realsnake;
     qlearner.apple = apple;
+    op_qlearner.snake = op_realsnake
+    op_qlearner.apple = apple
 
     // Update generation counter in storage and HTML element
     let globalgencount = parseInt(window.localStorage.getItem("age"))
@@ -421,7 +437,7 @@ function restartGame() {
   score = resetscore
   document.getElementById("score-counter").innerText = resetscore;
   background(255);
-  drawSnakeComplete();
+  drawSnakeComplete(realsnake);
   drawSquare(apple.square, color(255, 0, 0));
   gameOver = false;
 }

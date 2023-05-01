@@ -1,11 +1,23 @@
 // Snake Class
 class Snake {
-  constructor() {
-    this.squares = [
-      new Square(0, 0, squareWidth),
-      new Square(xOffset + squareWidth, 0, squareWidth),
-      new Square(xOffset * 2 + squareWidth * 2, 0, squareWidth)
-    ]
+  constructor(x) {
+    if (x = 0){
+      this.squares = [
+        /* new Square(x * squareWidth, y * squareWidth, squareWidth),
+        new Square(x + xOffset + squareWidth, y, squareWidth),
+        new Square(x + xOffset * 2 + squareWidth * 2, y, squareWidth) */
+        new Square(300, 0, 20),
+        new Square(325, 0, 20),
+        new Square(350, 0, 20)
+      ]
+    }
+    else if (x = 1) {
+      this.squares = [
+        new Square(0, 0, 20),
+        new Square(25, 0, 20),
+        new Square(50, 0, 20)
+      ]
+    }
     this.head = this.squares[this.squares.length - 1];
     this.oldTail = null;
     this.oldTailxDir = 0;
