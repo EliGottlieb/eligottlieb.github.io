@@ -69,7 +69,7 @@ function windowResized() {
   let dimensions = calculateCanvasSize();
   resizeCanvas(dimensions.canvasWidth, dimensions.canvasHeight);
   background(255);
-  drawSnakeComplete();
+  drawSnakeComplete(realsnake);
   apple.square = apple.getRandomSquare();
   drawSquare(apple.square, color(255, 0, 0));
 }

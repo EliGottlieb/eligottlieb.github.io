@@ -2,10 +2,10 @@ let qLearningRate = 0.9;
 let qDiscountFactor = 0.85;
 
 class QLearner {
-    constructor(apple) {
+    constructor(x, apple) {
         this.brain = new Network(inputLayerSize, hiddenLayerSize, hiddenLayerSize, 4);
         this.targetbrain = this.brain
-        this.snake = new Snake();
+        this.snake = new Snake(x);
         this.apple = apple;
         this.availableActions = ['up', 'down', 'left', 'right'];
         this.experienceRelay = {};

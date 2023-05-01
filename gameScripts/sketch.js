@@ -235,10 +235,10 @@ function setup() {
     document.getElementById("training-counter").innerText = "Training: " + parseInt(window.localStorage.getItem("training"))
 
     // Create qlearner and set brain to brain informaiton saved in storage
-    qlearner = new QLearner(apple);
+    qlearner = new QLearner(0, apple);
     realsnake = qlearner.snake
     downloadBrain()
-    op_qlearner = new QLearner(apple)
+    op_qlearner = new QLearner(1, apple)
     op_realsnake = op_qlearner.snake
   }
 
@@ -261,7 +261,6 @@ function draw() {
     // Prepare for simulation, read sliders
     frameRate(60)
     qlearner.randomize = 0
-    frameRate(0)
 
     // Initialize sim information
     let oldState = qlearner.getCurrentState();;
@@ -378,8 +377,14 @@ function draw() {
     // Update the game
     realsnake.move();
     drawSnake(realsnake);
+
+    doAction('down', op_realsnake)
+    op_realsnake.move();
+    drawSnake(op_realsnake)
     inputUsed = false;
   }
+
+  // User Input
   else {
     // Check if eating apple
     checkEatingApple(realsnake, false)
@@ -401,14 +406,19 @@ function draw() {
 
 function restartGame() {
   // Reset snake and apple
-  realsnake = new Snake();
+  realsnake = new Snake(0);
+  op_realsnake = new Snake(1)
   apple = new Apple();
 
   if (!userInput) {
-    savedsnake = new Snake();
+    savedsnake = new Snake(0);
+    op_realsnake = new Snake(1)
+    op_realsnake.squares = [new Square(300, 0, 20), new Square(325, 0, 20), new Square(350, 0, 20)]
     // Re-save snake and apple
     qlearner.snake = realsnake;
     qlearner.apple = apple;
+    op_qlearner.snake = op_realsnake
+    op_qlearner.apple = apple
 
     // Update generation counter in storage and HTML element
     let globalgencount = parseInt(window.localStorage.getItem("age"))
