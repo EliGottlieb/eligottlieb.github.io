@@ -368,6 +368,8 @@ function draw() {
     // Check apple and collisions
     checkEatingApple(realsnake, false)
     checkCollisions(realsnake, false)
+    checkEatingApple(op_realsnake, false)
+    checkCollisions(op_realsnake, false)
     if (gameOver) {
       genCount++;
       restartGame();
